@@ -36,7 +36,7 @@ func main() {
 
 }
 
-func dolarSqlite(jsonStr string) error {
+func dolarSqlite(ctx context.Context, jsonStr string) error {
 
 	db, err := sql.Open("sqlite3", "cotacoes.db")
 	if err != nil {
@@ -70,18 +70,27 @@ func dolarSqlite(jsonStr string) error {
 		panic(err)
 	}
 
-	_, err = db.Exec(`
+	select {
+
+	case <-ctx.Done():
+		fmt.Println("Timeout context occurred to quote recorded in the database")
+		panic(ctx.Err())
+
+	default:
+		_, err = db.Exec(`
 		INSERT INTO USDBRL (
 			code, codein, name, high, low, varBid, pctChange, bid, ask, timestamp, create_date
 		) VALUES (
 			?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
 		)
-	`, quote.USDBRL.Code, quote.USDBRL.Codein, quote.USDBRL.Name, quote.USDBRL.High, quote.USDBRL.Low, quote.USDBRL.VarBid, quote.USDBRL.PctChange, quote.USDBRL.Bid, quote.USDBRL.Ask, quote.USDBRL.Timestamp, quote.USDBRL.CreateDate)
-	if err != nil {
-		panic(err)
+		`, quote.USDBRL.Code, quote.USDBRL.Codein, quote.USDBRL.Name, quote.USDBRL.High, quote.USDBRL.Low, quote.USDBRL.VarBid, quote.USDBRL.PctChange, quote.USDBRL.Bid, quote.USDBRL.Ask, quote.USDBRL.Timestamp, quote.USDBRL.CreateDate)
+		if err != nil {
+			panic(err)
+		}
+
+		fmt.Println("Dollar quote recorded in the database")
 	}
 
-	fmt.Println("Dollar quote recorded in the database")
 	return nil
 }
 
@@ -122,6 +131,9 @@ func quoteDolar(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(body)
 
-	dolarSqlite(string(body))
+	dbctx, cancel := context.WithTimeout(context.Background(), 10*time.Millisecond)
+	defer cancel()
+
+	dolarSqlite(dbctx, string(body))
 
 }
