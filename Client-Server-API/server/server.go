@@ -87,7 +87,7 @@ func quoteDolarHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	response := map[string]interface{}{"Dólar": bid}
+	response := map[string]interface{}{"Dolar": bid}
 	responseBody, err := json.Marshal(response)
 	if err != nil {
 		http.Error(w, "Error encoding response", http.StatusInternalServerError)
