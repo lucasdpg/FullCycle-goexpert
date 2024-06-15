@@ -25,20 +25,6 @@ O endpoint necessário gerado pelo server.go para este desafio será: /cotacao e
 
 ![Alt text](images/01images.png)
 
-# Estrutura do projeto
-
-.\
-├── README.md\
-├── client\
-│   ├── client.go\
-│   └── go.mod\
-├── images\
-│   └── 01images.png\
-└── server\
-    ├── go.mod\
-    ├── go.sum\
-    └── server.go\
-
 # Como rodar:
 
 Clonar o repositório:\
@@ -50,8 +36,12 @@ Acessar o diretorio do server:\
 Rodar o server:\
 `go run server.go`
 
-Acessar o diretorio do client:
+Acessar o diretorio do client:\
 `cd ../client/`
 
-Rodar o client:
+Rodar o client:\
 `go run client.go`
+
+### Obs
+
+Em alguns momentos, o tempo limite para acessar a API economia.awesomeapi.com.br não é suficiente, resultando em um erro de "context deadline exceeded". Isso também provoca um erro no lado do cliente.
