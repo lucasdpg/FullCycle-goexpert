@@ -71,7 +71,7 @@ func createTableIfNotExists(db *sql.DB) error {
 }
 
 func quoteDolarHandler(w http.ResponseWriter, r *http.Request) {
-	ctx, cancel := context.WithTimeout(r.Context(), 200*time.Millisecond)
+	ctx, cancel := context.WithTimeout(r.Context(), 5000*time.Millisecond)
 	defer cancel()
 
 	data, err := fetchQuote(ctx)
