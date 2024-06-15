@@ -27,27 +27,27 @@ O endpoint necessário gerado pelo server.go para este desafio será: /cotacao e
 
 # Estrutura do projeto
 
-.
-├── README.md
-├── client
-│   ├── client.go
-│   └── go.mod
-├── images
-│   └── 01images.png
-└── server
-    ├── go.mod
-    ├── go.sum
-    └── server.go
+.\
+├── README.md\
+├── client\
+│   ├── client.go\
+│   └── go.mod\
+├── images\
+│   └── 01images.png\
+└── server\
+    ├── go.mod\
+    ├── go.sum\
+    └── server.go\
 
 # Como rodar:
 
-Clonar o repositório:
+Clonar o repositório:\
 `git clone git@github.com:lucasdpg/FullCycle-goexpert.git`
 
-Acessar o diretorio do server:
+Acessar o diretorio do server:\
 `cd FullCycle-goexpert/Client-Server-API/server/`
 
-Rodar o server:
+Rodar o server:\
 `go run server.go`
 
 Acessar o diretorio do client:
