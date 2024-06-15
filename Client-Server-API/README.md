@@ -24,3 +24,34 @@ O client.go terá que salvar a cotação atual em um arquivo "cotacao.txt" no fo
 O endpoint necessário gerado pelo server.go para este desafio será: /cotacao e a porta a ser utilizada pelo servidor HTTP será a 8080.
 
 ![Alt text](images/01images.png)
+
+# Estrutura do projeto
+
+.
+├── README.md
+├── client
+│   ├── client.go
+│   └── go.mod
+├── images
+│   └── 01images.png
+└── server
+    ├── go.mod
+    ├── go.sum
+    └── server.go
+
+# Como rodar:
+
+Clonar o repositório:
+`git clone git@github.com:lucasdpg/FullCycle-goexpert.git`
+
+Acessar o diretorio do server:
+`cd FullCycle-goexpert/Client-Server-API/server/`
+
+Rodar o server:
+`go run server.go`
+
+Acessar o diretorio do client:
+`cd ../client/`
+
+Rodar o client:
+`go run client.go`
