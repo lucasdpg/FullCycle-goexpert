@@ -3,60 +3,77 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"io"
 	"net/http"
+	"time"
 )
 
 func main() {
+
 	cep := "01153000"
-	//url1 := "https://viacep.com.br/ws/"
-	//compl1 := "/json/"
+
+	url1 := "https://viacep.com.br/ws/"
+	compl1 := "/json/"
+	resultChan1 := make(chan string)
+
 	url2 := "https://brasilapi.com.br/api/cep/v1/"
 	compl2 := ""
+	resultChan2 := make(chan string)
 
-	body, err := reqCep(cep, url2, compl2)
-	if err != nil {
-		fmt.Println("Erro:", err)
-		return
+	go func() {
+		body, err := reqCep(cep, url1, compl1)
+		if err != nil {
+			panic(err)
+		}
+		// Validar timeout
+		//time.Sleep(time.Second * 2)
+		resultChan1 <- body
+	}()
+
+	go func() {
+		body, err := reqCep(cep, url2, compl2)
+		if err != nil {
+			panic(err)
+		}
+		// Validar timeout
+		// time.Sleep(time.Second * 2)
+		resultChan2 <- body
+	}()
+
+	select {
+	case res1 := <-resultChan1:
+		fmt.Println("--- Resposta API viacep ---")
+		fmt.Println(string(res1))
+	case res2 := <-resultChan2:
+		fmt.Println("--- Resposta API brasilapi ---")
+		fmt.Println(string(res2))
+	case <-time.After(time.Second * 1):
+		fmt.Println("--- Timeout ---")
 	}
 
-	jsonData, err := readBody(body)
+}
+
+func reqCep(cep, url, compl string) (string, error) {
+
+	req, err := http.Get(url + cep + compl)
 	if err != nil {
-		fmt.Println("Error to read response:", err)
-		return
+		return "", err
+	}
+	defer req.Body.Close()
+
+	if req.StatusCode != http.StatusOK {
+		return "", err
+	}
+
+	var jsonData map[string]interface{}
+	if err := json.NewDecoder(req.Body).Decode(&jsonData); err != nil {
+		return "", err
 	}
 
 	response, err := json.MarshalIndent(jsonData, "", "  ")
 	if err != nil {
-		fmt.Println("Error to marshal JSON:", err)
-		return
+		return "", err
 	}
 
-	fmt.Println(string(response))
-}
-
-func reqCep(cep, url, compl string) (io.ReadCloser, error) {
-	req, err := http.Get(url + cep + compl)
-	if err != nil {
-		return nil, fmt.Errorf("error to get CEP %v: %v", cep, err)
-	}
-
-	if req.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("error to get CEP %v: status %v", cep, req.Status)
-	}
-
-	return req.Body, nil
-}
-
-func readBody(body io.ReadCloser) (map[string]interface{}, error) {
-
-	defer body.Close()
-
-	var result map[string]interface{}
-	if err := json.NewDecoder(body).Decode(&result); err != nil {
-		return nil, fmt.Errorf("error to decode body: %v", err)
-	}
-
-	return result, nil
+	return string(response), nil
 
 }
