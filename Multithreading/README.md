@@ -15,3 +15,14 @@ Os requisitos para este desafio são:
 - O resultado da request deverá ser exibido no command line com os dados do endereço, bem como qual API a enviou.
 
 - Limitar o tempo de resposta em 1 segundo. Caso contrário, o erro de timeout deve ser exibido.
+
+# Como rodar:
+
+Clonar o repositório:\
+`git clone git@github.com:lucasdpg/FullCycle-goexpert.git`
+
+Acessar o diretorio do server:\
+`cd FullCycle-goexpert/Multithreading`
+
+Rodar o server:\
+`go run main.go`
