@@ -9,6 +9,7 @@ import (
 
 func main() {
 
+	// E definida as variaveis necessaria para fazer as requests para as apis
 	cep := "01153000"
 
 	url1 := "https://viacep.com.br/ws/"
@@ -19,6 +20,8 @@ func main() {
 	compl2 := ""
 	resultChan2 := make(chan string)
 
+	// E feito a request simultaneamente  utilizando threads diferentes.
+	
 	go func() {
 		body, err := reqCep(cep, url1, compl1)
 		if err != nil {
@@ -39,6 +42,10 @@ func main() {
 		resultChan2 <- body
 	}()
 
+	// Aqui é verificado qual api vai responde mais rapido, a api que responder preenche o respectivo  canal 
+	// utilizando o select verifico qual canal foi preenchido e faço um print da request no console. 
+	// Por ultimo caso o tempo de resposta passe de 1 segundo é respondido uma timeout.
+	
 	select {
 	case res1 := <-resultChan1:
 		fmt.Println("--- Resposta API viacep ---")
