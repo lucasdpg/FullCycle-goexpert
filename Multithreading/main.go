@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"time"
 )
 
 func main() {
@@ -14,20 +15,41 @@ func main() {
 	compl1 := "/json/"
 	resultChan1 := make(chan string)
 
-	//url2 := "https://brasilapi.com.br/api/cep/v1/"
-	//compl2 := ""
+	url2 := "https://brasilapi.com.br/api/cep/v1/"
+	compl2 := ""
+	resultChan2 := make(chan string)
 
 	go func() {
 		body, err := reqCep(cep, url1, compl1)
 		if err != nil {
 			panic(err)
 		}
+		// Validar timeout
+		//time.Sleep(time.Second * 2)
 		resultChan1 <- body
 	}()
 
-	res := <-resultChan1
+	go func() {
+		body, err := reqCep(cep, url2, compl2)
+		if err != nil {
+			panic(err)
+		}
+		// Validar timeout
+		// time.Sleep(time.Second * 2)
+		resultChan2 <- body
+	}()
 
-	fmt.Println(string(res))
+	select {
+	case res1 := <-resultChan1:
+		fmt.Println("--- Resposta API viacep ---")
+		fmt.Println(string(res1))
+	case res2 := <-resultChan2:
+		fmt.Println("--- Resposta API brasilapi ---")
+		fmt.Println(string(res2))
+	case <-time.After(time.Second * 1):
+		fmt.Println("--- Timeout ---")
+	}
+
 }
 
 func reqCep(cep, url, compl string) (string, error) {
