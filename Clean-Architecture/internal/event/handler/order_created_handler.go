@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/devfullcycle/20-CleanArch/pkg/events"
+	"github.com/lucasdpg/FullCycle-goexpert/Clean-Architecture/pkg/events"
 	"github.com/streadway/amqp"
 )
 
