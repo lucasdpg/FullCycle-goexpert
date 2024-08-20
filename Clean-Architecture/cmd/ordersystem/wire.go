@@ -6,13 +6,13 @@ package main
 import (
 	"database/sql"
 
-	"github.com/devfullcycle/20-CleanArch/internal/entity"
-	"github.com/devfullcycle/20-CleanArch/internal/event"
-	"github.com/devfullcycle/20-CleanArch/internal/infra/database"
-	"github.com/devfullcycle/20-CleanArch/internal/infra/web"
-	"github.com/devfullcycle/20-CleanArch/internal/usecase"
-	"github.com/devfullcycle/20-CleanArch/pkg/events"
 	"github.com/google/wire"
+	"github.com/lucasdpg/FullCycle-goexpert/Clean-Architecture/internal/entity"
+	"github.com/lucasdpg/FullCycle-goexpert/Clean-Architecture/internal/event"
+	"github.com/lucasdpg/FullCycle-goexpert/Clean-Architecture/internal/infra/database"
+	"github.com/lucasdpg/FullCycle-goexpert/Clean-Architecture/internal/infra/web"
+	"github.com/lucasdpg/FullCycle-goexpert/Clean-Architecture/internal/usecase"
+	"github.com/lucasdpg/FullCycle-goexpert/Clean-Architecture/pkg/events"
 )
 
 var setOrderRepositoryDependency = wire.NewSet(
