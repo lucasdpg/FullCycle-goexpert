@@ -4,13 +4,9 @@ import (
 	"database/sql"
 	"fmt"
 	"net"
-	"net/http"
 
-	graphql_handler "github.com/99designs/gqlgen/graphql/handler"
-	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/lucasdpg/FullCycle-goexpert/Clean-Architecture/configs"
 	"github.com/lucasdpg/FullCycle-goexpert/Clean-Architecture/internal/event/handler"
-	"github.com/lucasdpg/FullCycle-goexpert/Clean-Architecture/internal/infra/graph"
 	"github.com/lucasdpg/FullCycle-goexpert/Clean-Architecture/internal/infra/grpc/pb"
 	"github.com/lucasdpg/FullCycle-goexpert/Clean-Architecture/internal/infra/grpc/service"
 	"github.com/lucasdpg/FullCycle-goexpert/Clean-Architecture/internal/infra/web/webserver"
@@ -61,20 +57,21 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	go grpcServer.Serve(lis)
+	grpcServer.Serve(lis)
 
-	srv := graphql_handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{
-		CreateOrderUseCase: *createOrderUseCase,
-	}}))
-	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
-	http.Handle("/query", srv)
-
-	fmt.Println("Starting GraphQL server on port", configs.GraphQLServerPort)
-	http.ListenAndServe(":"+configs.GraphQLServerPort, nil)
+	//	srv := graphql_handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{
+	//		CreateOrderUseCase: *createOrderUseCase,
+	//	}}))
+	//
+	// http.Handle("/", playground.Handler("GraphQL playground", "/query"))
+	// http.Handle("/query", srv)
+	//
+	// fmt.Println("Starting GraphQL server on port", configs.GraphQLServerPort)
+	// http.ListenAndServe(":"+configs.GraphQLServerPort, nil)
 }
 
 func getRabbitMQChannel() *amqp.Channel {
-	conn, err := amqp.Dial("amqp://guest:guest@localhost:5672/")
+	conn, err := amqp.Dial("amqp://guest:guest@localhost:5672/") //colocar como variable
 	if err != nil {
 		panic(err)
 	}
