@@ -16,14 +16,26 @@ func NewListOrderUseCase(
 	}
 }
 
-//func (c *CreateOrderUseCase) ListExecute() (OrderOutputDTO, error) {
+func (l *ListOrderUseCase) ListExecute() ([]OrderOutputDTO, error) {
 
-//dto := OrderOutputDTO{
-//	ID:         order.ID,
-//	Price:      order.Price,
-//	Tax:        order.Tax,
-//	FinalPrice: order.Price + order.Tax,
-//}
-//
-//return dto, nil
-//}
+	orders, err := l.OrderRepository.ListOrder()
+	if err != nil {
+		return nil, err
+	}
+
+	var ordersDTO []OrderOutputDTO
+
+	for _, order := range orders {
+
+		orderDTO := OrderOutputDTO{
+			ID:         order.ID,
+			Price:      order.Price,
+			Tax:        order.Tax,
+			FinalPrice: order.FinalPrice,
+		}
+		ordersDTO = append(ordersDTO, orderDTO)
+	}
+
+	return ordersDTO, nil
+
+}
