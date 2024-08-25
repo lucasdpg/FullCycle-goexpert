@@ -31,8 +31,48 @@ Obs: Em alguns momentos este comando pode falahar a conexnão com o banco, neste
 ### Informações uteis para validar o desafio:
 
 Se tudo ocorreu como deveria os serviços devem subir em WEB, gRPC e GraphQL segue as portas:
-`Starting web server on port :8000
-Starting gRPC server on port 50051
-Starting GraphQL server on port 8080`
+
+WEB: 8000, gRPC: 50051 e GraphQL: 8080
 
 Os serviços devem ser acessados em `localhost`
+
+### WEBSERVER
+Acessando os arquivos api/create_order.http e api/list_order.http encontrara as chamadas REST para testar o create e o list.
+
+### gRPC
+Utilizando o Evans passo a passo:
+
+Acessar o serviço: `evans -r repl --host 127.0.0.1 --port 50051`
+
+Acessar o package: `package pb`
+
+Acessar o service: `service OrderService`
+
+Chamar o create: `call CreateOrder`
+
+Chamar o list: `call ListOrders`
+
+### GraphQL
+Acessar pelo navegador: `http://localhost:8080/`
+
+Digitar a mutation e a query:
+
+mutation createOrder {
+  createOrder(input: {id: "xxxxx", Price: 10.2, Tax: 2.0}) {
+    id
+    Price
+    Tax
+    FinalPrice
+  }
+}
+
+query queryOrder {
+  order {
+    id
+    Price
+    Tax
+    FinalPrice
+  }
+}
+
+Rodar `createOrder` e `queryOrder`
