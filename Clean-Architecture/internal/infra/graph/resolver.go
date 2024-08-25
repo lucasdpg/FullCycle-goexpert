@@ -8,5 +8,5 @@ import "github.com/lucasdpg/FullCycle-goexpert/Clean-Architecture/internal/useca
 
 type Resolver struct {
 	CreateOrderUseCase usecase.CreateOrderUseCase
-	// ListOrder?
+	ListOrderUseCase   usecase.ListOrderUseCase
 }
