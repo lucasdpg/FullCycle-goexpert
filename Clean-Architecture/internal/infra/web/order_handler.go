@@ -47,3 +47,22 @@ func (h *WebOrderHandler) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
+
+func (h *WebOrderHandler) ListOrders(w http.ResponseWriter, r *http.Request) {
+
+	listOrderUseCase := usecase.NewListOrderUseCase(h.OrderRepository)
+
+	ordersDTO, err := listOrderUseCase.ListExecute()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+
+	err = json.NewEncoder(w).Encode(ordersDTO)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+}

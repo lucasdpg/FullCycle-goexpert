@@ -43,3 +43,6 @@ func (o *Order) CalculateFinalPrice() error {
 	}
 	return nil
 }
+
+// List Order?
+// Acho que não regra de negocio aqui.

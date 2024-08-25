@@ -3,6 +3,7 @@ version: '3'
 services:
   mysql:
     image: mysql:5.7
+    platform: linux/amd64
     container_name: mysql
     restart: always
     environment:
@@ -16,6 +17,7 @@ services:
 
   rabbitmq:
     image: rabbitmq:3-management
+    platform: linux/amd64
     container_name: rabbitmq
     restart: always
     ports:
