@@ -56,7 +56,7 @@ Chamar o list: `call ListOrders`
 
 Acessar pelo navegador: `http://localhost:8080/`
 
-Digitar a mutation e a query:
+Digitar a mutation e a query e rodar `createOrder` e `queryOrder`
 
 ```graphql
 mutation createOrder {
@@ -76,5 +76,3 @@ query queryOrder {
     FinalPrice
   }
 }
-
-Rodar `createOrder` e `queryOrder`
