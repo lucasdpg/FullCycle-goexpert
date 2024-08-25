@@ -52,11 +52,13 @@ Chamar o create: `call CreateOrder`
 
 Chamar o list: `call ListOrders`
 
-### GraphQL
+###GraphQL
+
 Acessar pelo navegador: `http://localhost:8080/`
 
 Digitar a mutation e a query:
 
+```graphql
 mutation createOrder {
   createOrder(input: {id: "xxxxx", Price: 10.2, Tax: 2.0}) {
     id
