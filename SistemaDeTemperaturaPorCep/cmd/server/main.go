@@ -7,6 +7,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/lucasdpg/FullCycle-goexpert/SistemaDeTemperaturaPorCep/configs"
 )
 
 type Temperature struct {
@@ -16,6 +17,12 @@ type Temperature struct {
 }
 
 func main() {
+
+	configs, err := configs.LoadConfig(".")
+	if err != nil {
+		panic(err)
+	}
+
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
@@ -34,7 +41,7 @@ func main() {
 			return
 		}
 
-		currentWeather, err := getCurrentWeather(lat, lon)
+		currentWeather, err := getCurrentWeather(lat, lon, configs.WeatherApiToken)
 		if err != nil {
 			http.Error(w, "Error Weather: "+err.Error(), http.StatusBadRequest)
 			return
@@ -78,8 +85,8 @@ func getLatLonByCep(cep string) (string, string, error) {
 	return jsonData[0].Lat, jsonData[0].Lon, nil
 }
 
-func getCurrentWeather(lat, lon string) (*Temperature, error) {
-	apikey := "xxxxxxxxxxxx"
+func getCurrentWeather(lat, lon, apikey string) (*Temperature, error) {
+
 	url := fmt.Sprintf("http://api.weatherapi.com/v1/current.json?key=%s&q=%s,%s&aqi=no", apikey, lat, lon)
 
 	resp, err := http.Get(url)
