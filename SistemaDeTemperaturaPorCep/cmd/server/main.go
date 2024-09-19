@@ -45,10 +45,8 @@ func main() {
 			return
 		}
 
-		// Define the Content-Type header as application/json
 		w.Header().Set("Content-Type", "application/json")
 
-		// Marshal the temperature data to JSON and write it to the response
 		json.NewEncoder(w).Encode(currentWeather)
 	})
 
