@@ -77,7 +77,7 @@ O deploy deverá ser realizado no Google Cloud Run.
 
 - **Retorno 404 ("invalid zipcode")**:
   ```bash
-curl -X POST https://servergo-741438282735.southamerica-east1.run.app/temperature-by-cep/10000000
+  curl -X POST https://servergo-741438282735.southamerica-east1.run.app/temperature-by-cep/10000000
   ```
 
 ### 1. Utilizando Docker compose
