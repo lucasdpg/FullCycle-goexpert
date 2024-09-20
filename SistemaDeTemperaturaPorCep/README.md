@@ -1,8 +1,10 @@
-# Objetivo
+# LAB deploy com Cloud Run - Desafio Pratico
+
+## Objetivo
 
 Desenvolver um sistema em Go que receba um CEP, identifique a cidade e retorne o clima atual (temperatura em graus Celsius, Fahrenheit e Kelvin). Esse sistema deverá ser publicado no Google Cloud Run.
 
-# Requisitos
+## Requisitos
 
 - O sistema deve receber um CEP válido de 8 dígitos.
 - O sistema deve realizar a pesquisa do CEP e encontrar o nome da localização.
@@ -55,3 +57,27 @@ O deploy deverá ser realizado no Google Cloud Run.
 - Testes automatizados demonstrando o funcionamento.
 - Utilize Docker/Docker Compose para os testes da aplicação.
 - Deploy realizado no Google Cloud Run (free tier) com o endereço ativo para acesso.
+
+# Instruções
+
+## Formas de testar o projeto:
+
+1. Utilizando o link do Cloud Run
+
+retorno 200 "ok"
+`curl -X POST https://servergo-741438282735.southamerica-east1.run.app/temperature-by-cep/13339575`
+
+retorno 422 "invalid zipcode"
+`curl -X POST https://servergo-741438282735.southamerica-east1.run.app/temperature-by-cep/aaaaaa`
+`curl -X POST https://servergo-741438282735.southamerica-east1.run.app/temperature-by-cep/1000`
+
+retorno 404 "can not find zipcode"
+`curl -X POST https://servergo-741438282735.southamerica-east1.run.app/temperature-by-cep/10000000`
+
+2. Utilizando Docker Compose
+
+Deve-se passar uma chave valida `WEATHER_API_TOKEN=''` no arquivo `.env`
+Comando: `docker compose up -d` faz o build e sobe o serviço.
+
+As mesmas chamadas do step 1 podem ser feitas utilizando host: localhost:3000, exemplo: 
+`curl -X POST https://localhost:3000/temperature-by-cep/13339575`.
