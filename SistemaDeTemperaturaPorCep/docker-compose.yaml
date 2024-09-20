@@ -8,6 +8,6 @@ services:
     image: servergo:latest
     container_name: servergo
     environment: # Variáveis de ambiente passadas para o container
-      - WEATHER_API_TOKEN=6ec2c09d28164feeb1202633241709
+      - WEATHER_API_TOKEN=xxxxxx
     ports:
       - "3000:3000"

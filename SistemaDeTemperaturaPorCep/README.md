@@ -62,22 +62,34 @@ O deploy deverá ser realizado no Google Cloud Run.
 
 ## Formas de testar o projeto:
 
-1. Utilizando o link do Cloud Run
+### 1. Utilizando o link do Cloud Run
 
-retorno 200 "ok"
-`curl -X POST https://servergo-741438282735.southamerica-east1.run.app/temperature-by-cep/13339575`
+- **Retorno 200 ("ok")**:
+  ```bash
+  curl -X POST https://servergo-741438282735.southamerica-east1.run.app/temperature-by-cep/13339575
+  ```
 
-retorno 422 "invalid zipcode"
-`curl -X POST https://servergo-741438282735.southamerica-east1.run.app/temperature-by-cep/aaaaaa`
-`curl -X POST https://servergo-741438282735.southamerica-east1.run.app/temperature-by-cep/1000`
+- **Retorno 422 ("invalid zipcode")**:
+  ```bash
+  curl -X POST https://servergo-741438282735.southamerica-east1.run.app/  temperature-by-cep/aaaaaa
+  curl -X POST https://servergo-741438282735.southamerica-east1.run.app/  temperature-by-cep/1000
+  ```
 
-retorno 404 "can not find zipcode"
-`curl -X POST https://servergo-741438282735.southamerica-east1.run.app/temperature-by-cep/10000000`
+- **Retorno 404 ("invalid zipcode")**:
+  ```bash
+curl -X POST https://servergo-741438282735.southamerica-east1.run.app/temperature-by-cep/10000000
+  ```
 
-2. Utilizando Docker Compose
+### 1. Utilizando Docker compose
 
-Deve-se passar uma chave valida `WEATHER_API_TOKEN=''` no arquivo `.env`
-Comando: `docker compose up -d` faz o build e sobe o serviço.
+Configure uma chave válida no arquivo docker-compose.yaml para WEATHER_API_TOKEN=''.
+Execute o comando, roda o build docker e sube o serviço:
+  ```bash
+  docker compose up -d
+  ```
+As mesmas chamadas do passo 1 podem ser feitas utilizando o host localhost:3000. Exemplo:
+  ```bash
+  curl -X POST https://localhost:3000/temperature-by-cep/13339575
+  ```
 
-As mesmas chamadas do step 1 podem ser feitas utilizando host: localhost:3000, exemplo: 
-`curl -X POST https://localhost:3000/temperature-by-cep/13339575`.
+
