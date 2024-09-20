@@ -2,7 +2,9 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
@@ -12,9 +14,15 @@ import (
 
 func main() {
 
-	configs, err := configs.LoadConfig(".")
-	if err != nil {
-		panic(err)
+	WeatherApiToken := os.Getenv("WEATHER_API_TOKEN")
+	fmt.Println(WeatherApiToken)
+	if WeatherApiToken == "" {
+		fmt.Println("Getting WEATHER_API_TOKEN in .env file")
+		configs, err := configs.LoadConfig(".")
+		if err != nil {
+			panic(err)
+		}
+		WeatherApiToken = configs.WeatherApiToken
 	}
 
 	r := chi.NewRouter()
@@ -39,7 +47,7 @@ func main() {
 			return
 		}
 
-		currentWeather, err := services.GetCurrentWeather(lat, lon, configs.WeatherApiToken)
+		currentWeather, err := services.GetCurrentWeather(lat, lon, WeatherApiToken)
 		if err != nil {
 			http.Error(w, "Error Weather: "+err.Error(), http.StatusBadRequest)
 			return
