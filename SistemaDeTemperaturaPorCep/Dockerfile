@@ -37,4 +37,6 @@ COPY --from=mydebian /usr/bin/sleep /app/sleep
 COPY cmd/server/.env /app/.env
 COPY container/app-run.sh /app/app-run.sh
 
+EXPOSE 3000
+
 CMD [ "app-run.sh" ]
