@@ -15,6 +15,13 @@ type Cep struct {
 	Cep string `json:"cep"`
 }
 
+type Temperature struct {
+	City   string `json:"city"`
+	Temp_C string `json:"temp_C"`
+	Temp_F string `json:"temp_F"`
+	Temp_K string `json:"temp_K"`
+}
+
 func main() {
 
 	r := chi.NewRouter()
@@ -44,6 +51,33 @@ func decodeZipcode(body io.ReadCloser) (*Cep, error) {
 
 }
 
+func getServiceB(url string) (Temperature, error) {
+
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return Temperature{}, err
+	}
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return Temperature{}, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return Temperature{}, fmt.Errorf("unexpected status code: %d", resp.StatusCode)
+	}
+
+	var temp Temperature
+	err = json.NewDecoder(resp.Body).Decode(&temp)
+	if err != nil {
+		return Temperature{}, err
+	}
+
+	return temp, nil
+
+}
+
 func handleFunc(w http.ResponseWriter, r *http.Request) {
 
 	cep, err := decodeZipcode(r.Body)
@@ -54,7 +88,19 @@ func handleFunc(w http.ResponseWriter, r *http.Request) {
 
 	cepok := validateZipcode(cep.Cep)
 	if cepok {
-		fmt.Println(cep.Cep)
+		sbUrl := fmt.Sprintf("serviceB:3031/find-zipcode/%v", cep.Cep)
+		temp, err := getServiceB(sbUrl)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusUnprocessableEntity)
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+
+		if err := json.NewEncoder(w).Encode(temp); err != nil {
+			http.Error(w, "", http.StatusInternalServerError)
+		}
+
 	} else {
 		http.Error(w, "invalid zipcode", http.StatusUnprocessableEntity)
 		return
