@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"regexp"
+	"strings"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
@@ -16,7 +17,7 @@ type Cep struct {
 }
 
 type Temperature struct {
-	//City   string `json:"city"`
+	City   string  `json:"city"`
 	Temp_C float64 `json:"temp_c"`
 	Temp_F float64 `json:"temp_f"`
 	Temp_K float64 `json:"temp_k"`
@@ -34,7 +35,13 @@ func main() {
 }
 
 func validateZipcode(zipcode string) bool {
+
+	if strings.TrimSpace(zipcode) == "" {
+		return false
+	}
+
 	regex := regexp.MustCompile(`^\d{8}$`)
+
 	return regex.MatchString(zipcode)
 }
 
@@ -53,7 +60,7 @@ func decodeZipcode(body io.ReadCloser) (*Cep, error) {
 
 func getServiceB(url string) (Temperature, error) {
 
-	req, err := http.NewRequest("POST", url, nil)
+	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return Temperature{}, err
 	}
@@ -89,7 +96,7 @@ func handleFunc(w http.ResponseWriter, r *http.Request) {
 	cepok := validateZipcode(cep.Cep)
 
 	if cepok {
-		sbUrl := fmt.Sprintf("https://servergo-741438282735.southamerica-east1.run.app/temperature-by-cep/%v", cep.Cep)
+		sbUrl := fmt.Sprintf("http://localhost:3000/zipcode-check/%v", cep.Cep)
 		temp, err := getServiceB(sbUrl)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusUnprocessableEntity)

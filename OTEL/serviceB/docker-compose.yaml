@@ -1,0 +1,13 @@
+version: '3.8'
+services:
+  serviceb:
+    platform: linux/amd64 
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    image: serviceb:latest
+    container_name: serviceb
+    environment:
+      - WEATHER_API_TOKEN=xxxx
+    ports:
+      - "3000:3000"
