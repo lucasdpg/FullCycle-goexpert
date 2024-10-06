@@ -1,9 +1,12 @@
 package services
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
+
+	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 )
 
 type Temperature struct {
@@ -13,11 +16,17 @@ type Temperature struct {
 	Temp_k float64
 }
 
-func GetCurrentWeather(lat, lon, apikey string) (*Temperature, error) {
+func GetCurrentWeather(ctx context.Context, lat, lon, apikey string) (*Temperature, error) {
 
 	url := fmt.Sprintf("http://api.weatherapi.com/v1/current.json?key=%s&q=%s,%s&aqi=no", apikey, lat, lon)
 
-	resp, err := http.Get(url)
+	client := http.Client{Transport: otelhttp.NewTransport(http.DefaultTransport)}
+	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := client.Do(req)
 	if err != nil {
 		return nil, err
 	}

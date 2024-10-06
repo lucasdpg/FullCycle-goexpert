@@ -11,3 +11,9 @@ services:
       - WEATHER_API_TOKEN=xxxx
     ports:
       - "3000:3000"
+
+  zipkin:
+    image: openzipkin/zipkin
+    container_name: zipkin
+    ports:
+      - "9411:9411"

@@ -1,16 +1,25 @@
 package services
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
 	"regexp"
+
+	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 )
 
-func GetLatLonByZipcode(cep string) (string, string, error) {
+func GetLatLonByZipcode(ctx context.Context, cep string) (string, string, error) {
 	url := fmt.Sprintf("https://nominatim.openstreetmap.org/search?postalcode=%s&country=Brazil&format=json", cep)
 
-	resp, err := http.Get(url)
+	client := http.Client{Transport: otelhttp.NewTransport(http.DefaultTransport)}
+	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
+	if err != nil {
+		return "", "", err
+	}
+
+	resp, err := client.Do(req)
 	if err != nil {
 		return "", "", err
 	}
