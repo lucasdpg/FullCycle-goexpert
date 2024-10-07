@@ -93,7 +93,7 @@ cd FullCycle-goexpert/OTEL
 ```
 
 ```
-cd docker compose up -d
+docker compose up -d
 ```
 
 3. O acesso ao Zipkin pelo browser.
