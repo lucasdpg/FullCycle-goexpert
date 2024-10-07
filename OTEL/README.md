@@ -106,7 +106,7 @@ http://localhost:9411/
 
 Status 200
 ```
-curl -X POST localhost:3030/zipcode -H "Content-Type: application/json" -d '{"cep": "13331630"}'
+curl -X POST localhost:3030/zipcode -H "Content-Type: application/json" -d '{"cep": "09581420"}'
 ```
 
 Status 404
