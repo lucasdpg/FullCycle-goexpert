@@ -78,7 +78,13 @@ Baseado no cenário conhecido "Sistema de temperatura por CEP", denominado Servi
 
 Para rodar o projeto e fazer os testes basta rodar os comandos abaixo para subir as apps do docker compose e fazer os testes. 
 
-1. docker compose
+1. Fazer o clone
+
+```
+git clone git@github.com:lucasdpg/FullCycle-goexpert.git
+```
+
+2. docker compose
 
 Acessar a pasta raiz do projeto e rodar o comando:
 
@@ -86,13 +92,13 @@ Acessar a pasta raiz do projeto e rodar o comando:
 docker compose up -d
 ```
 
-2. O acesso ao Zipkin pelo browser.
+3. O acesso ao Zipkin pelo browser.
 
 ```
 http://localhost:9411/
 ```
 
-3. Comandos exemplos para fazer as chamadas no serviço A e validar o projeto.
+4. Comandos exemplos para fazer as chamadas no serviço A e validar o projeto.
 
 ```
 Status 200
