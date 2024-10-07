@@ -104,20 +104,17 @@ http://localhost:9411/
 
 4. Comandos exemplos para fazer as chamadas no serviço A e validar o projeto.
 
-```
 Status 200
-
+```
 curl -X POST localhost:3030/zipcode -H "Content-Type: application/json" -d '{"cep": "13331630"}'
 ```
 
-```
 Status 404
-
+```
 curl -X POST localhost:3030/zipcode -H "Content-Type: application/json" -d '{"cep": "10101010"}'
 ```
 
-```
 Status 422
-
+```
 curl -X POST localhost:3030/zipcode -H "Content-Type: application/json" -d '{"cep": "1010"}'
 ```
