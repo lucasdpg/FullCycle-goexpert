@@ -73,3 +73,41 @@ Baseado no cenário conhecido "Sistema de temperatura por CEP", denominado Servi
 - O código-fonte completo da implementação.
 - Documentação explicando como rodar o projeto em ambiente dev.
 - Utilize **docker/docker-compose** para que possamos realizar os testes de sua aplicação.
+
+# Como rodar o projeto em ambiente dev.
+
+Para rodar o projeto e fazer os testes basta rodar os comandos abaixo para subir as apps do docker compose e fazer os testes. 
+
+1. docker compose
+
+Acessar a pasta raiz do projeto e rodar o comando:
+
+```
+docker compose up -d
+```
+
+2. O acesso ao Zipkin pelo browser.
+
+```
+http://localhost:9411/
+```
+
+3. Comandos exemplos para fazer as chamadas no serviço A e validar o projeto.
+
+```
+Status 200
+
+curl -X POST localhost:3030/zipcode -H "Content-Type: application/json" -d '{"cep": "13331630"}'
+```
+
+```
+Status 404
+
+curl -X POST localhost:3030/zipcode -H "Content-Type: application/json" -d '{"cep": "10101010"}'
+```
+
+```
+Status 422
+
+curl -X POST localhost:3030/zipcode -H "Content-Type: application/json" -d '{"cep": "1010"}'
+```

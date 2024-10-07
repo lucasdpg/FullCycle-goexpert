@@ -12,7 +12,7 @@ import (
 )
 
 func InitTracer() func() {
-	url := "http://localhost:9411/api/v2/spans"
+	url := "http://zipkin:9411/api/v2/spans"
 
 	exporter, err := zipkin.New(url)
 	if err != nil {

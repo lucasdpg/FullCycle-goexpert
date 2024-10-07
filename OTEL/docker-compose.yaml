@@ -1,14 +1,25 @@
 version: '3.8'
 services:
+
+  servicea:
+    platform: linux/amd64 
+    build: 
+      context: ./serviceA
+      dockerfile: Dockerfile
+    image: servicea:latest
+    container_name: servicea
+    ports:
+      - "3030:3030"
+
   serviceb:
     platform: linux/amd64 
     build: 
-      context: .
+      context: ./serviceB
       dockerfile: Dockerfile
     image: serviceb:latest
     container_name: serviceb
     environment:
-      - WEATHER_API_TOKEN=xxxx
+      - WEATHER_API_TOKEN=6ec2c09d28164feeb1202633241709
     ports:
       - "3000:3000"
 

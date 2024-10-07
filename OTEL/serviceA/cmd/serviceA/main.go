@@ -35,13 +35,12 @@ type Temperature struct {
 var tracer trace.Tracer
 
 func main() {
-	// Inicializar o OpenTelemetry com Zipkin
 	initTracer()
 
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
-	r.Use(otelMiddleware) // Middleware para traçar todas as requisições
+	r.Use(otelMiddleware)
 
 	r.Post("/zipcode", handleFunc)
 
@@ -49,8 +48,7 @@ func main() {
 }
 
 func initTracer() {
-	// Configura o Zipkin como o exportador
-	exporter, err := zipkin.New("http://localhost:9411/api/v2/spans")
+	exporter, err := zipkin.New("http://zipkin:9411/api/v2/spans")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -63,14 +61,13 @@ func initTracer() {
 		)),
 	)
 
-	// Configurar o provedor global de traces
 	otel.SetTracerProvider(tp)
 	tracer = otel.Tracer("zipcode-tracer")
 }
 
 func otelMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		ctx, span := otel.Tracer("serviceA").Start(r.Context(), "HTTP "+r.Method)
+		ctx, span := tracer.Start(r.Context(), "HTTP "+r.Method)
 		defer span.End()
 
 		next.ServeHTTP(w, r.WithContext(ctx))
@@ -108,7 +105,7 @@ func getServiceB(ctx context.Context, url string) (Temperature, error) {
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return Temperature{}, fmt.Errorf("can not find zipcode: %d", resp.StatusCode)
+		return Temperature{}, fmt.Errorf("can not find zipcode")
 	}
 
 	var temp Temperature
@@ -121,7 +118,7 @@ func getServiceB(ctx context.Context, url string) (Temperature, error) {
 }
 
 func handleFunc(w http.ResponseWriter, r *http.Request) {
-	ctx, span := otel.Tracer("serviceA").Start(r.Context(), "handleFunc")
+	ctx, span := tracer.Start(r.Context(), "handleFunc")
 	defer span.End()
 
 	cep, err := decodeZipcode(r.Body)
@@ -132,12 +129,12 @@ func handleFunc(w http.ResponseWriter, r *http.Request) {
 
 	cepok := validateZipcode(cep.Cep)
 	if cepok {
-		sbUrl := fmt.Sprintf("http://localhost:3000/zipcode-check/%v", cep.Cep)
+		sbUrl := fmt.Sprintf("http://serviceb:3000/zipcode-check/%v", cep.Cep)
 
-		// Passa o contexto `ctx` para o `getServiceB`
 		temp, err := getServiceB(ctx, sbUrl)
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusUnprocessableEntity)
+			http.Error(w, "can not find zipcode", http.StatusNotFound)
+			return
 		}
 
 		w.Header().Set("Content-Type", "application/json")
@@ -145,9 +142,9 @@ func handleFunc(w http.ResponseWriter, r *http.Request) {
 
 		if err := json.NewEncoder(w).Encode(temp); err != nil {
 			http.Error(w, "", http.StatusInternalServerError)
+			return
 		}
 
-		fmt.Println(temp)
 	} else {
 		http.Error(w, "invalid zipcode", http.StatusUnprocessableEntity)
 		return

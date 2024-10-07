@@ -17,12 +17,10 @@ import (
 
 func main() {
 
-	// Initialize OpenTelemetry tracer
 	cleanup := otelpkg.InitTracer()
 	defer cleanup()
 
 	WeatherApiToken := os.Getenv("WEATHER_API_TOKEN")
-	fmt.Println(WeatherApiToken)
 	if WeatherApiToken == "" {
 		fmt.Println("Getting WEATHER_API_TOKEN in .env file")
 		configs, err := configs.LoadConfig(".")
@@ -55,13 +53,13 @@ func main() {
 			return
 		}
 
-		lat, lon, err := services.GetLatLonByZipcode(ctx, cep) // Passar ctx
+		lat, lon, err := services.GetLatLonByZipcode(ctx, cep)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusNotFound)
 			return
 		}
 
-		currentWeather, err := services.GetCurrentWeather(ctx, lat, lon, WeatherApiToken) // Passar ctx
+		currentWeather, err := services.GetCurrentWeather(ctx, lat, lon, WeatherApiToken)
 		if err != nil {
 			http.Error(w, "Error Weather: "+err.Error(), http.StatusBadRequest)
 			return
