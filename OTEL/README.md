@@ -86,10 +86,14 @@ git clone git@github.com:lucasdpg/FullCycle-goexpert.git
 
 2. docker compose
 
-Acessar a pasta raiz do projeto e rodar o comando:
+Acessar a pasta raiz do projeto e rodar o comando do docker compose
 
 ```
-docker compose up -d
+cd FullCycle-goexpert/OTEL
+```
+
+```
+cd docker compose up -d
 ```
 
 3. O acesso ao Zipkin pelo browser.
