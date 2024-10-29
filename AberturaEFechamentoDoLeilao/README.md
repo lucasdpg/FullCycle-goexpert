@@ -28,6 +28,8 @@ Para mais informações de como funciona uma goroutine, clique aqui e acesse nos
  
 ### Entrega
 
-O código-fonte completo da implementação.
-Documentação explicando como rodar o projeto em ambiente dev.
-Utilize docker/docker-compose para podermos realizar os testes de sua aplicação.
+- O código-fonte completo da implementação.
+
+- Documentação explicando como rodar o projeto em ambiente dev.
+
+- Utilize docker/docker-compose para podermos realizar os testes de sua aplicação.
