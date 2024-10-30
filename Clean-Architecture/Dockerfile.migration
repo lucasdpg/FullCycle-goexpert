@@ -1,0 +1,11 @@
+FROM golang:1.22
+
+WORKDIR /app
+
+COPY . .
+
+RUN go install -tags 'mysql' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
+
+RUN apt-get update && apt-get install -y make
+
+ENTRYPOINT ["make", "migrate"]
