@@ -14,7 +14,10 @@ Além disso, não se esqueça de criar as migrações necessárias e o arquivo `
 
 Para a criação do banco de dados, utilize o Docker. O comando `docker compose up` deverá configurar e iniciar tudo automaticamente, incluindo o banco de dados.
 
-### Estrutura do Projeto
+Inclua um README.md com os passos a serem executados no desafio e a porta em que a aplicação deverá responder em cada serviço.
+
+
+# Como rodar o projeto e os testes
 
 1. **Clone o repositório e navegue até o diretório do projeto:**
 
@@ -22,7 +25,7 @@ Para a criação do banco de dados, utilize o Docker. O comando `docker compose 
     git clone git@github.com:lucasdpg/FullCycle-goexpert.git && cd FullCycle-goexpert/Clean-Architecture
     ```
 
-2. **Inicie o MySQL e o RabbitMQ:**
+2. **Inicie o MySQL o RabbitMQ e Rodar a Migration:**
 
     ```bash
     docker-compose up -d
@@ -30,25 +33,19 @@ Para a criação do banco de dados, utilize o Docker. O comando `docker compose 
 
     > **Nota:** Pode ser necessário aguardar alguns minutos até que o banco de dados esteja pronto para o próximo passo.
 
-3. **Prepare o Banco de Dados:**
-
-    ```bash
-    make migrate
-    ```
-
     > **Nota:** Em alguns casos, a conexão com o banco de dados pode falhar. Caso isso ocorra, reinicie o banco de dados com:
 
     ```bash
     docker-compose down && docker-compose up -d
     ```
 
-4. **Inicie o Projeto:**
+3. **Inicie o Projeto:**
 
     ```bash
     cd cmd/ordersystem && go run main.go wire_gen.go
     ```
 
-### Validação do Desafio
+# Validação do Desafio
 
 Se tudo foi configurado corretamente, os serviços estarão disponíveis nas seguintes portas:
 
