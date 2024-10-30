@@ -26,3 +26,13 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
+
+  migration:
+    build:
+      context: .
+      dockerfile: Dockerfile.migration
+    container_name: migration
+    depends_on:
+      - mysql
+    environment:
+      DB_URL: "mysql://root:root@tcp(mysql:3306)/orders"
