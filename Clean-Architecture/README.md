@@ -25,7 +25,7 @@ Inclua um README.md com os passos a serem executados no desafio e a porta em que
     git clone git@github.com:lucasdpg/FullCycle-goexpert.git && cd FullCycle-goexpert/Clean-Architecture
     ```
 
-2. **Inicie o MySQL o RabbitMQ e Rodar a Migration:**
+2. **Inicie o projeto:**
 
     ```bash
     docker-compose up -d
@@ -37,12 +37,6 @@ Inclua um README.md com os passos a serem executados no desafio e a porta em que
 
     ```bash
     docker-compose down && docker-compose up -d
-    ```
-
-3. **Inicie o Projeto:**
-
-    ```bash
-    cd cmd/ordersystem && go run main.go wire_gen.go
     ```
 
 # Validação do Desafio
