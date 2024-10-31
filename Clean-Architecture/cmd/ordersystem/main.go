@@ -76,7 +76,7 @@ func main() {
 }
 
 func getRabbitMQChannel(amqpUser, amqpPass, amqpHost, amqpPort string) *amqp.Channel {
-	amqpConnUrl := fmt.Sprintf("amqp://%s:%s@%s:%s/", amqpUser, amqpPass, amqpHost, amqpPort) //"amqp://guest:guest@localhost:5672/"
+	amqpConnUrl := fmt.Sprintf("amqp://%s:%s@%s:%s/", amqpUser, amqpPass, amqpHost, amqpPort)
 	conn, err := amqp.Dial(amqpConnUrl)
 
 	if err != nil {
