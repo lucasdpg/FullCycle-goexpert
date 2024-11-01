@@ -36,7 +36,6 @@ func NewAuctionRepository(database *mongo.Database) *AuctionRepository {
 	}
 }
 
-// CreateAuction insere um novo leilão na coleção de leilões do MongoDB
 func (ar *AuctionRepository) CreateAuction(ctx context.Context, auctionEntity *auction_entity.Auction) *internal_error.InternalError {
 	auctionMongo := AuctionEntityMongo{
 		Id:          auctionEntity.Id,
@@ -46,7 +45,7 @@ func (ar *AuctionRepository) CreateAuction(ctx context.Context, auctionEntity *a
 		Condition:   auctionEntity.Condition,
 		Status:      auctionEntity.Status,
 		Timestamp:   auctionEntity.Timestamp.Unix(),
-		ExpiresAt:   auctionEntity.Timestamp.Add(24 * time.Hour).Unix(), // Exemplo: leilão expira em 24 horas
+		ExpiresAt:   auctionEntity.Timestamp.Add(24 * time.Hour).Unix(),
 	}
 
 	_, err := ar.Collection.InsertOne(ctx, auctionMongo)
@@ -56,7 +55,6 @@ func (ar *AuctionRepository) CreateAuction(ctx context.Context, auctionEntity *a
 	return nil
 }
 
-// MonitorExpiredAuctions verifica e fecha leilões vencidos
 func (ar *AuctionRepository) MonitorExpiredAuctions(ctx context.Context) {
 	interval := getMonitorInterval()
 	ticker := time.NewTicker(interval)
@@ -73,13 +71,12 @@ func (ar *AuctionRepository) MonitorExpiredAuctions(ctx context.Context) {
 	}
 }
 
-// closeExpiredAuctions fecha leilões cujo prazo expirou
 func (ar *AuctionRepository) closeExpiredAuctions(ctx context.Context) {
 	now := time.Now().Unix()
 
 	filter := bson.M{
 		"expires_at": bson.M{"$lt": now},
-		"status":     auction_entity.Open, // Verifica apenas leilões abertos
+		"status":     auction_entity.Open,
 	}
 
 	update := bson.M{
@@ -94,11 +91,10 @@ func (ar *AuctionRepository) closeExpiredAuctions(ctx context.Context) {
 	logger.Info("Closed expired auctions", zap.Int64("modified_count", result.ModifiedCount))
 }
 
-// getMonitorInterval retorna o intervalo de verificação de leilões expirados
 func getMonitorInterval() time.Duration {
 	intervalStr := os.Getenv("AUCTION_MONITOR_INTERVAL")
 	if intervalStr == "" {
-		return 1 * time.Minute // valor padrão
+		return 1 * time.Minute
 	}
 	interval, err := strconv.Atoi(intervalStr)
 	if err != nil {
