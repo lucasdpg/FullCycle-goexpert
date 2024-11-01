@@ -33,3 +33,18 @@ Para mais informações de como funciona uma goroutine, clique aqui e acesse nos
 - Documentação explicando como rodar o projeto em ambiente dev.
 
 - Utilize docker/docker-compose para podermos realizar os testes de sua aplicação.
+
+
+# Como rodar o projeto?
+
+1. Clone o repo
+
+```
+git clone git@github.com:lucasdpg/FullCycle-goexpert.git && cd FullCycle-goexpert/AberturaEFechamentoDoLeilao/labs-auction-goexpert
+```
+
+2. Rode o comando do docker compose.
+
+```
+docker compose up -d
+```
