@@ -12,10 +12,11 @@ import (
 	"fullcycle-auction_go/internal/usecase/auction_usecase"
 	"fullcycle-auction_go/internal/usecase/bid_usecase"
 	"fullcycle-auction_go/internal/usecase/user_usecase"
+	"log"
+
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/mongo"
-	"log"
 )
 
 func main() {
@@ -31,6 +32,10 @@ func main() {
 		log.Fatal(err.Error())
 		return
 	}
+
+	// Inicializa a goroutine para monitorar leilões expirados
+	auctionRepository := auction.NewAuctionRepository(databaseConnection)
+	go auctionRepository.MonitorExpiredAuctions(ctx)
 
 	router := gin.Default()
 
